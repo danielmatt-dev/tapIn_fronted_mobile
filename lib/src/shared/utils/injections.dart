@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tapin/src/shared/utils/robert_injections.dart';
 
 final sl = GetIt.instance;
 
@@ -20,4 +21,5 @@ initInjections() async {
   sl.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
 
+  initRobertInjections();
 }
