@@ -1,0 +1,11 @@
+import 'package:tapin/src/features/data/data_sources/local/datasource_local.dart';
+import 'package:tapin/src/features/data/data_sources/local/impl/datasource_local_impl.dart';
+import 'package:tapin/src/shared/utils/injections.dart';
+
+initDanielInjections() async {
+
+  /*  Datasource Local */
+  sl.registerSingleton<DataSourceLocal>(
+      DataSourceLocalImpl(sharedPreferences: sl()));
+
+}
