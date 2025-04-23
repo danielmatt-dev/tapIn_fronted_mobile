@@ -10,7 +10,6 @@ class NfcCubit extends Cubit<NfcState> {
 
   final EscanearNFC escanearNFC;
 
-
   NfcCubit({
     required this.escanearNFC
   }): super(const NfcInitial());
@@ -37,6 +36,7 @@ class NfcCubit extends Cubit<NfcState> {
               },
             (alumno) {
               print(alumno);
+              emit(const NfcCheckSuccess());
             });
   }
 

@@ -2,6 +2,7 @@ import 'package:tapin/src/features/data/data_sources/local/datasource_local.dart
 import 'package:tapin/src/features/data/data_sources/local/impl/datasource_local_impl.dart';
 import 'package:tapin/src/features/domain/use_cases/buscar_token.dart';
 import 'package:tapin/src/features/domain/use_cases/escanear_nfc.dart';
+import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
 import 'package:tapin/src/shared/utils/injections.dart';
 
 initDanielInjections() async {
@@ -16,4 +17,7 @@ initDanielInjections() async {
 
   sl.registerSingleton<EscanearNFC>(EscanearNFC());
 
+  /* Cubit */
+  sl.registerSingleton<NfcCubit>(NfcCubit(escanearNFC: sl()));
+  
 }
