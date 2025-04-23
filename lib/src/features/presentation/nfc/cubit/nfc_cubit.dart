@@ -35,7 +35,7 @@ class NfcCubit extends Cubit<NfcState> {
               emit(const NfcCheckError());
               },
             (alumno) {
-              print(alumno);
+              print(alumno.toString());
               emit(const NfcCheckSuccess());
             });
   }
