@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:tapin/src/features/presentation/nfc/nfc_screen.dart';
+import 'package:tapin/src/features/presentation/nfc/pages/nfc_screen.dart';
 import 'package:tapin/src/shared/utils/injections.dart';
 
 void main() async {
