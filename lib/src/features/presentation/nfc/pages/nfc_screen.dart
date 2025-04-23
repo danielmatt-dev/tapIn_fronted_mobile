@@ -1,7 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:nfc_manager/nfc_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tapin/src/features/domain/entites/alumno_request.dart';
+import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
+import 'package:tapin/src/shared/utils/injections.dart';
 
 class NFCScreen extends StatefulWidget {
   const NFCScreen({super.key});
@@ -11,31 +12,17 @@ class NFCScreen extends StatefulWidget {
 }
 
 class _NFCScreenState extends State<NFCScreen> {
-  List<String> messages = [];
 
-  void _startSession() async {
-    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      final ndef = Ndef.from(tag);
-      if (ndef == null || ndef.cachedMessage == null) {
-        setState(() {
-          messages = ['No NDEF data'];
-        });
-        return;
-      }
+  final nfcCubit = sl<NfcCubit>();
 
-      final records = ndef.cachedMessage!.records;
-      final decodedMessages = records.map((record) {
-        final payload = record.payload;
+  @override
+  void initState() {
+    _escanearNFC();
+    super.initState();
+  }
 
-        return utf8.decode(payload.sublist(3));
-      }).toList();
-
-      setState(() {
-        messages = decodedMessages;
-      });
-
-      NfcManager.instance.stopSession();
-    });
+  void _escanearNFC() {
+    nfcCubit.escanearNfcEvent(TipoAcceso.Entrada);
   }
 
   @override
@@ -46,9 +33,33 @@ class _NFCScreenState extends State<NFCScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...messages.map((m) => Text(m)),
+            BlocBuilder<NfcCubit, NfcState>(
+                builder: (context, state) {
+
+                  if (state is NfcLoading) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  if (state is NfcCheckSuccess) {
+                    return const Text('Escaneo exitoso');
+                  }
+
+                  if (state is NfcUnavailable) {
+                    return const Text('El dispositivo no tiene NFC');
+                  }
+
+                  if (state is NfcNoData) {
+                    return const Text('El tag no tiene datos');
+                  }
+
+                  if (state is NfcCheckError) {
+                    return const Text('Error al escanear NFC');
+                  }
+
+                  return const SizedBox.shrink();
+                }),
             ElevatedButton(
-              onPressed: _startSession,
+              onPressed: _escanearNFC,
               child: const Text('Leer tarjeta NFC'),
             ),
           ],

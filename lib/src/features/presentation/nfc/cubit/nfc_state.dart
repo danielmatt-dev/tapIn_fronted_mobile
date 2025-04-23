@@ -20,3 +20,11 @@ class NfcCheckSuccess extends NfcState {
 class NfcCheckError extends NfcState {
   const NfcCheckError();
 }
+
+class NfcUnavailable extends NfcState {
+  const NfcUnavailable();
+}
+
+class NfcNoData extends NfcState {
+  const NfcNoData();
+}

@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tapin/src/features/presentation/nfc/pages/nfc_screen.dart';
@@ -6,7 +9,26 @@ import 'package:tapin/src/shared/utils/injections.dart';
 void main() async {
   await dotenv.load(fileName: '.env');
   await initInjections();
-  runApp(const MyApp());
+  tz.initializeTimeZones();
+  runApp(const BlocProviders());
+}
+
+class BlocProviders extends StatelessWidget {
+
+  const BlocProviders({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<NfcCubit>(
+              create: (context) => sl<NfcCubit>()
+          ),
+        ],
+        child: const MyApp()
+    );
+  }
+
 }
 
 class MyApp extends StatelessWidget {

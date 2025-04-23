@@ -41,4 +41,10 @@ class AlumnoRequest{
   set idNfc(String value) {
     _idNfc = value;
   }
+
+  @override
+  String toString() {
+    return 'AlumnoRequest(idNfc: $_idNfc, fecha: $_fecha, hora: $_hora, tipoAcceso: $_tipoAcceso)';
+  }
+
 }
