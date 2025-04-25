@@ -15,4 +15,10 @@ class DataSourceRemoteImpl extends DataSourceRemote{
     throw UnimplementedError();
   }
 
+  @override
+  Future<Either<Exception, bool>> consultarAsistenciaAlumno() {
+    // TODO: implement consultarAsistenciaAlumno
+    throw UnimplementedError();
+  }
+
 }
