@@ -18,5 +18,5 @@ initRobertInjections() async{
     RegistrarAsistenciaAlumno(mapper: sl(), remote: sl()));
 
   sl.registerSingleton<ConsultarAsistenciaAlumno>(
-    ConsultarAsistenciaAlumno(remote: sl()));
+    ConsultarAsistenciaAlumno(remote: sl(), local: sl()));
 }
