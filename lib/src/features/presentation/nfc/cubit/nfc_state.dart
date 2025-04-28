@@ -2,29 +2,31 @@ part of 'nfc_cubit.dart';
 
 // Estados del nfc para el cubit
 sealed class NfcState {
-  const NfcState();
+  final String message;
+  const NfcState(this.message);
 }
 
 class NfcInitial extends NfcState {
-  const NfcInitial();
+  const NfcInitial(): super('');
 }
 
 class NfcLoading extends NfcState {
-  const NfcLoading();
+  const NfcLoading(): super('');
 }
 
 class NfcCheckSuccess extends NfcState {
-  const NfcCheckSuccess();
+  final List<String> data;
+  const NfcCheckSuccess(this.data, super.message);
 }
 
 class NfcCheckError extends NfcState {
-  const NfcCheckError();
+  const NfcCheckError(super.message);
 }
 
 class NfcUnavailable extends NfcState {
-  const NfcUnavailable();
+  const NfcUnavailable(super.message);
 }
 
 class NfcNoData extends NfcState {
-  const NfcNoData();
+  const NfcNoData(super.message);
 }

@@ -23,20 +23,19 @@ class NfcCubit extends Cubit<NfcState> {
             (exception) {
 
               if (exception is NFCUnavailableException) {
-                emit(const NfcUnavailable());
+                emit(const NfcUnavailable('NFC no encontrado o no habilitado'));
                 return;
               }
 
               if (exception is NfcNoDataException) {
-                emit(const NfcNoData());
+                emit(const NfcNoData('No hay datos en el NFC'));
                 return;
               }
 
-              emit(const NfcCheckError());
+              emit(const NfcCheckError('Error en el escaneo'));
               },
-            (alumno) {
-              print(alumno.toString());
-              emit(const NfcCheckSuccess());
+            (data) {
+              emit(NfcCheckSuccess(data, 'Escaneo exitoso'));
             });
   }
 
