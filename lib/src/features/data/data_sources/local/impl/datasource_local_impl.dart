@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tapin/src/features/data/data_sources/local/datasource_local.dart';
+import 'package:tapin/src/features/data/models/alumno_response_model.dart';
 
 class DataSourceLocalImpl extends DataSourceLocal {
 
@@ -17,6 +18,18 @@ class DataSourceLocalImpl extends DataSourceLocal {
   @override
   Future<bool> setToken(String token) {
     // TODO: implement setToken
+    throw UnimplementedError();
+  }
+
+  @override
+  List<AlumnoResponseModel> buscarListaAlumnos() {
+    // TODO: implement buscarListaAlumnos
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<AlumnoResponseModel>> guardarAlumnos(List<AlumnoResponseModel> alumnos) {
+    // TODO: implement guardarAlumnos
     throw UnimplementedError();
   }
 
