@@ -11,8 +11,6 @@ class EscanearNFC extends UseCase<List<String>, TipoAcceso> {
   @override
     Future<Either<Exception, List<String>>> call(TipoAcceso params) async {
 
-    await Future.delayed(const Duration(seconds: 2));
-
     final isAvailable = await NfcManager.instance.isAvailable();
     if (!isAvailable) {
       return Left(NFCUnavailableException());
@@ -47,7 +45,12 @@ class EscanearNFC extends UseCase<List<String>, TipoAcceso> {
           }
         });
 
-    return completer.future;
+    return completer.future.timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          NfcManager.instance.stopSession();
+          return Left(NFCTimeoutException());
+        });
   }
 
 }
