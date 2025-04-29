@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pulsator/pulsator.dart';
+import 'package:tapin/src/core/styles/button_custom.dart';
+import 'package:tapin/src/core/styles/text_custom_style.dart';
 import 'package:tapin/src/core/theme/colors.dart';
 import 'package:tapin/src/features/domain/entites/alumno_request.dart';
 import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
 import 'package:tapin/src/shared/utils/injections.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NFCScreen extends StatefulWidget {
 
@@ -37,70 +40,70 @@ class _NFCScreenState extends State<NFCScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.tipoAcceso.name.toUpperCase())),
+      appBar: AppBar(title: Text(widget.tipoAcceso.name.toUpperCase()), centerTitle: true,),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BlocBuilder<NfcCubit, NfcState>(
-                builder: (context, state) {
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              BlocBuilder<NfcCubit, NfcState>(
+                  builder: (context, state) {
 
-                  if (state is NfcCheckSuccess) {
-                    pulseColor = mapColor['Success'];
-                  }
+                    if (state is NfcLoading) {
+                      pulseColor = mapColor['Initial'];
+                    }
 
-                  if (state is NfcUnavailable || state is NfcNoData || state is NfcCheckError) {
-                    pulseColor = mapColor['Error'];
-                  }
+                    if (state is NfcCheckSuccess) {
+                      pulseColor = mapColor['Success'];
+                    }
 
-                  return Column(
-                    children: [
-                      PulseIcon(
-                        icon: Icons.phone_android_rounded,
-                        pulseColor: pulseColor,
-                        iconSize: 60,
-                        innerSize: 100,
-                        pulseSize: width,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                        child: _buildWidget(state),
-                      )
-                    ],
-                  );
-                }),
-          ],
+                    if (state is NfcUnavailable || state is NfcNoData || state is NfcTimeout || state is NfcCheckError) {
+                      pulseColor = mapColor['Error'];
+                    }
+
+                    return Column(
+                      children: [
+                        PulseIcon(
+                          icon: Icons.phone_android_rounded,
+                          pulseColor: pulseColor,
+                          iconSize: 60,
+                          innerSize: 100,
+                          pulseSize: width,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 10),
+                          child: _buildWidget(state, AppLocalizations.of(context)),
+                        )
+                      ],
+                    );
+                  }),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildWidget(NfcState state) {
+  Widget _buildWidget(NfcState state, AppLocalizations? app) {
 
     if (state is NfcLoading) {
       return Column(
         children: [
-          const Text('Acerque el dispositivo',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.center,
+          TextCustomStyle(
+            text: app!.bringDeviceCloser,
+            typeText: TypeText.title,
           ),
-          Text('Coloque su dispositivo cerca del lector NFC y manténgalo estable hasta que se complete el escaneo.', textAlign: TextAlign.center,),
-          SizedBox(height: 14,),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF23436E),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 18, right: 40, left: 40),
+            child: TextCustomStyle(
+              text: app.placeDeviceNearReader,
+              textAlign: TextAlign.center,
             ),
-            child: const Text('Cancelar', style: TextStyle(fontWeight: FontWeight.bold),),
-          )
+          ),
+          ButtonCustom(
+            text: app.cancelButtonLabel,
+            onPressed: () {},
+          ),
         ],
       );
     }
@@ -109,59 +112,56 @@ class _NFCScreenState extends State<NFCScreen> {
       return Column(
         children: [
           const Icon(Icons.circle, size:150,),
-          Text(
-            state.message,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.center,
+          TextCustomStyle(
+            text: app!.nfcCheckSuccessMessage,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,),
+          TextCustomStyle(text: app.attendanceRegistered),
+          const SizedBox(height: 10,),
+          TextCustomStyle(text: state.name),
+          const SizedBox(height: 10,),
+          ButtonCustom(
+            text: app.continueButtonLabel,
+            onPressed: () {
+              nfcCubit.escanearNfcEvent(widget.tipoAcceso);
+            },
           ),
-          Text('Asistencia Registrada'),
-          SizedBox(height: 10,),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF23436E),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            child: const Text('Continuar', style: TextStyle(fontWeight: FontWeight.bold),),
-          )
         ],
       );
+    }
+
+    String messageError = app!.nfcCheckErrorMessage;
+
+    if (state is NfcNoData) {
+      messageError = app.nfcNoDataMessage;
+    }
+
+    if (state is NfcUnavailable) {
+      messageError = app.nfcUnavailableMessage;
+    }
+
+    if (state is NfcTimeout) {
+      messageError = app.nfcTimeoutMessage;
     }
 
     return Column(
       children: [
         const Icon(Icons.circle, size:150,),
         Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Text(
-            state.message,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          padding: const EdgeInsets.only(bottom: 18),
+          child: TextCustomStyle(text: messageError, fontWeight: FontWeight.bold, fontSize: 16,)
         ),
-        SizedBox(height: 10,),
-        ElevatedButton(
+        ButtonCustom(
+          text: app.manualEntryButtonLabel,
           onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF23436E),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          child: const Text('Ingresar manualmente', style: TextStyle(fontWeight: FontWeight.bold),),
-        )
+        ),
+        ButtonCustom(
+          text: app.retryButtonLabel,
+          onPressed: () {
+            nfcCubit.escanearNfcEvent(widget.tipoAcceso);
+          },
+          topPadding: 10,
+        ),
       ],
     );
   }
