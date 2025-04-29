@@ -14,7 +14,10 @@ class NfcLoading extends NfcState {
 }
 
 class NfcCheckSuccess extends NfcState {
-  const NfcCheckSuccess();
+  final String id;
+  final String email;
+  final String name;
+  const NfcCheckSuccess({ required this.id, required this.email, required this.name });
 }
 
 class NfcCheckError extends NfcState {
@@ -27,4 +30,8 @@ class NfcUnavailable extends NfcState {
 
 class NfcNoData extends NfcState {
   const NfcNoData();
+}
+
+class NfcTimeout extends NfcState {
+  const NfcTimeout();
 }

@@ -1,0 +1,67 @@
+{
+  "entrada": "Entrada",
+  "@entrada": {
+    "description": "Título para registrar asistencia de entrada"
+  },
+
+  "bringDeviceCloser": "Acerque el dispositivo",
+  "@bringDeviceCloser": {
+    "description": "Texto corto pidiendo acercar el dispositivo al lector NFC"
+  },
+
+  "placeDeviceNearReader": "Coloque su dispositivo cerca del lector NFC y manténgalo estable hasta que se complete el escaneo.",
+  "@placeDeviceNearReader": {
+    "description": "Instrucción detallada para escanear correctamente usando NFC"
+  },
+
+  "nfcUnavailableMessage": "NFC no encontrado o no habilitado",
+  "@nfcUnavailableMessage": {
+    "description": "Mensaje cuando NFC no está disponible"
+  },
+
+  "nfcNoDataMessage": "No hay datos en el NFC",
+  "@nfcNoDataMessage": {
+    "description": "Mensaje cuando no se encuentran datos NFC"
+  },
+
+  "nfcCheckErrorMessage": "Error en el escaneo",
+  "@nfcCheckErrorMessage": {
+    "description": "Mensaje cuando falla el escaneo NFC"
+  },
+
+  "nfcCheckSuccessMessage": "Escaneo exitoso",
+  "@nfcCheckSuccessMessage": {
+    "description": "Mensaje cuando el escaneo NFC es exitoso"
+  },
+
+  "nfcTimeoutMessage": "Tiempo de espera de conexión NFC agotado",
+  "@nfcTimeoutMessage": {
+    "description": "Mensaje cuando se agota el tiempo de espera de la conexión NFC"
+  },
+
+  "cancelButtonLabel": "Cancelar",
+  "@cancelButtonLabel": {
+    "description": "Etiqueta para el botón de cancelar"
+  },
+
+  "attendanceRegistered": "Asistencia Registrada",
+  "@attendanceRegistered": {
+    "description": "Título que indica que la asistencia fue registrada correctamente"
+  },
+
+  "continueButtonLabel": "Continuar",
+  "@continueButtonLabel": {
+    "description": "Etiqueta del botón para continuar después de registrar asistencia"
+  },
+
+  "manualEntryButtonLabel": "Ingresar manualmente",
+  "@manualEntryButtonLabel": {
+    "description": "Etiqueta para el botón de ingresar manualmente datos de asistencia"
+  },
+
+  "retryButtonLabel": "Volver a intentar",
+  "@retryButtonLabel": {
+    "description": "Etiqueta para el botón de volver a intentar el escaneo o la acción fallida"
+  }
+
+}

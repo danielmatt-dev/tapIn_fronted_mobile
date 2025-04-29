@@ -32,11 +32,18 @@ class NfcCubit extends Cubit<NfcState> {
                 return;
               }
 
+              if (exception is NFCTimeoutException) {
+                emit(const NfcTimeout());
+                return;
+              }
+
               emit(const NfcCheckError());
               },
-            (alumno) {
-              print(alumno.toString());
-              emit(const NfcCheckSuccess());
+            (data) {
+              final id = data[0];
+              final email = data[1];
+              final name = data[2];
+              emit(NfcCheckSuccess(id: id, email: email, name: name));
             });
   }
 

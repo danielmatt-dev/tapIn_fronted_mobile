@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tapin/src/features/domain/entites/alumno_request.dart';
 import 'package:tapin/src/features/presentation/home/widgets/option_cart.dart';
+import 'package:tapin/src/features/presentation/nfc/pages/nfc_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -49,7 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     subtitle:
                     'Registra la llegada de los alumnos y confirma su asistencia',
                     onTap: () {
-
+                      Navigator.push(context,
+                        MaterialPageRoute(
+                          builder: (_) => const NFCScreen(tipoAcceso: TipoAcceso.Entrada),
+                        ),
+                      );
                     },
                   ),
                   const SizedBox(height: 16),
@@ -59,7 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     subtitle:
                     'Marca la salida de los alumnos y finaliza su asistencia',
                     onTap: () {
-
+                      Navigator.push(context,
+                        MaterialPageRoute(
+                          builder: (_) => const NFCScreen(tipoAcceso: TipoAcceso.Salida),
+                        ),
+                      );
                     },
                   ),
                 ],
