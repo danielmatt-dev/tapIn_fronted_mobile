@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tapin/src/features/presentation/home/pages/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -9,12 +10,16 @@ class LoginScreen extends StatelessWidget {
     final blueHeight = size.height * 0.35;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1E3A8A),
+        elevation: 0,
+        toolbarHeight: 0,
+      ),
       body: Stack(
         children: [
           Container(color: const Color(0xFF1E3A8A)),
 
           Positioned(
-            top: kToolbarHeight, // o el padding que prefieras
             left: 0,
             right: 0,
             child: Column(
@@ -64,7 +69,11 @@ class LoginScreen extends StatelessWidget {
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       onPressed: () {
-                        // lógica de Google Sign-In
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (_) => const HomeScreen(),
+                          ),
+                        );
                       },
                       icon: Image.asset(
                         'assets/images/Google.png',
