@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tapin/src/features/presentation/login/pages/login_screen.dart';
 import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const NFCScreen(),
+      home: const LoginScreen(),
     );
   }
 }
