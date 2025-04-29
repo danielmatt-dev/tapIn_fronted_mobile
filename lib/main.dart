@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tapin/src/features/presentation/home/pages/home_screen.dart';
 import 'package:tapin/src/features/presentation/login/pages/login_screen.dart';
 import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
 import 'package:timezone/data/latest.dart' as tz;
