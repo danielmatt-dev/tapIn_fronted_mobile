@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tapin/src/features/domain/entites/alumno_request.dart';
 import 'package:tapin/src/features/presentation/home/widgets/option_cart.dart';
 import 'package:tapin/src/features/presentation/nfc/pages/nfc_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
