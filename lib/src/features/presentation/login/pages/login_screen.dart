@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tapin/src/features/presentation/home/pages/home_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -8,6 +10,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final blueHeight = size.height * 0.35;
+    final appLocations = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +28,7 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Secundaria Instituto Patria',
+                  appLocations!.loginSchoolLabel,
                   style: Theme.of(context)
                       .textTheme
                       .headlineSmall!
@@ -59,8 +62,8 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const Text(
-                    'Inicia sesión con tu cuenta institucional de Google',
+                   Text(
+                    appLocations.loginMessageLabel,
                     textAlign: TextAlign.left,
                     style: TextStyle(fontSize: 16,
                     color: Colors.grey),
@@ -80,10 +83,10 @@ class LoginScreen extends StatelessWidget {
                         height: 24,
                         width: 24,
                       ),
-                      label: const Padding(
+                      label: Padding(
                         padding: EdgeInsets.symmetric(vertical: 12),
                         child: Text(
-                          'Iniciar sesión con Google',
+                          appLocations.loginButtonLabel,
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey,

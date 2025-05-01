@@ -62,6 +62,51 @@
   "retryButtonLabel": "Volver a intentar",
   "@retryButtonLabel": {
     "description": "Etiqueta para el botón de volver a intentar el escaneo o la acción fallida"
+  },
+
+  "loginSchoolLabel": "Secundaria Instituto Patria",
+  "@loginSchoolLabel": {
+    "description": "Titulo que indica el nombre de la secundaria "
+  },
+
+  "loginMessageLabel": "Inicia sesión con tu cuenta institucional de Google",
+  "@loginMessageLabel": {
+    "description": "Mensaje para indicar el inicio de sesión del usuario"
+  },
+
+  "loginButtonLabel": "Iniciar sesión con Google",
+  "@loginButtonLabel": {
+    "description": "Etiqueta para el boton de iniciar sesión con Google"
+  },
+
+  "entranceTitleLabel": "Entrada",
+  "@entranceTitleLabel": {
+    "description": "Etiqueta del titulo para el boton de entrada"
+  },
+
+  "entranceSubtitleLabel": "Registra la llegada de los alumnos y confirma su asistencia",
+  "@entranceSubtitleLabel": {
+    "description": "Etiqueta del subtitulo para el boton de entrada"
+  },
+
+  "exitTitleLabel": "Salida",
+  "@exitTitleLabel": {
+    "description": "Etiqueta del titulo para el boton de salida"
+  },
+
+  "exitSubtitleLabel": "Marca la salida de los alumnos y finaliza su asistencia",
+  "@exitSubtitleLabel": {
+    "description": "Etiqueta del subtitulo para el boton de salida"
+  },
+
+  "tapInLabel": "TapIn",
+  "@tapInLabel": {
+    "description": "Etiqueta del nombre de la app para el titulo del pie de página"
+  },
+
+  "tapInSubtitleLabel": "Sistema de asistencias",
+  "@tapInSubtitleLabel": {
+    "description": "Etiqueta de la descripción de la app para el subtitulo del pie de página"
   }
 
 }
