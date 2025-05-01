@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     const azul = Color(0xFF1E3A8A);
+    final appLocations = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -48,9 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   OptionCard(
                     icon: Icons.login,
-                    title: 'Entrada',
+                    title: appLocations!.entranceTitleLabel,
                     subtitle:
-                    'Registra la llegada de los alumnos y confirma su asistencia',
+                    appLocations.entranceSubtitleLabel,
                     onTap: () {
                       Navigator.push(context,
                         MaterialPageRoute(
@@ -62,9 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 16),
                   OptionCard(
                     icon: Icons.logout,
-                    title: 'Salida',
+                    title: appLocations.exitTitleLabel,
                     subtitle:
-                    'Marca la salida de los alumnos y finaliza su asistencia',
+                    appLocations.exitSubtitleLabel,
                     onTap: () {
                       Navigator.push(context,
                         MaterialPageRoute(
@@ -88,9 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Text(
-                  'TapIn',
+                  appLocations.tapInLabel,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -98,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Text(
-                  'Sistema de asistencias',
+                  appLocations.tapInSubtitleLabel,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 12,
