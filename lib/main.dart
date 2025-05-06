@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+import 'package:tapin/src/core/theme/colors.dart';
 import 'package:tapin/src/features/presentation/login/pages/login_screen.dart';
 import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
       ],
       locale: const Locale('es'),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: colorSchemeLight,
         useMaterial3: true,
       ),
       home: const LoginScreen(),

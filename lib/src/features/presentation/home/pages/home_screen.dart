@@ -17,13 +17,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const azul = Color(0xFF1E3A8A);
     final appLocations = AppLocalizations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.onPrimary,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.onPrimary,
         elevation: 0,
         toolbarHeight: 0,
       ),
@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       bottomNavigationBar: BottomAppBar(
-        color: azul,
+        color: colorScheme.primary,
         elevation: 16,
         child: SizedBox(
           height: 60,
@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   appLocations.tapInLabel,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   appLocations.tapInSubtitleLabel,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontSize: 12,
                   ),
                 ),

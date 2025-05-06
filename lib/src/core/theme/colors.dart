@@ -8,9 +8,9 @@ final Map mapColor = {
 
 class LightColors {
   static const colorLight = Color(0xFFF2F2F2);
-  static const primary = Color(0xFF23456e); //azul
+  static const primary = Color(0xFF253064); //azul
   static const onPrimary = Color(0xFFFFFFFF); //blanco
-  static const primaryVariant = Color(0xFF253064);
+  static const primaryVariant = Color(0xFF23456e);
   static const secondary = Color(0xFFF6BE56);
   static const onSecondary = Color(0xFFE2AE4B);
   static const surface = Color(0xFFFFFFFF); //blanco

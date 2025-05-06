@@ -46,7 +46,7 @@ class EscanearNFC extends UseCase<List<String>, TipoAcceso> {
         });
 
     return completer.future.timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 30),
         onTimeout: () {
           NfcManager.instance.stopSession();
           return Left(NFCTimeoutException());
