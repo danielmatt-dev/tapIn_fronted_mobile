@@ -11,16 +11,17 @@ class LoginScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final blueHeight = size.height * 0.35;
     final appLocations = AppLocalizations.of(context);
+    final colorSchema = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1E3A8A),
+        backgroundColor: colorSchema.primary,
         elevation: 0,
         toolbarHeight: 0,
       ),
       body: Stack(
         children: [
-          Container(color: const Color(0xFF1E3A8A)),
+          Container(color: colorSchema.primary),
 
           Positioned(
             left: 0,
@@ -32,7 +33,7 @@ class LoginScreen extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .headlineSmall!
-                      .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                      .copyWith(color: colorSchema.onPrimary, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
@@ -98,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        backgroundColor: Colors.white,
+                        backgroundColor: colorSchema.onPrimary,
                       ),
                     ),
                   ),
