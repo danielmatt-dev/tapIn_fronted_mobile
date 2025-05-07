@@ -7,9 +7,11 @@ import 'package:tapin/src/core/styles/text_custom_style.dart';
 import 'package:tapin/src/core/theme/colors.dart';
 import 'package:tapin/src/features/domain/entites/alumno_request.dart';
 import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
+import 'package:tapin/src/features/presentation/nfc/widgets/ingresar_asistencia_dialog.dart';
 import 'package:tapin/src/shared/utils/injections.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:tapin/src/shared/widgets/alert_cart.dart';
+
+import '../../home/pages/home_screen.dart';
 
 class NFCScreen extends StatefulWidget {
 
@@ -57,9 +59,16 @@ class _NFCScreenState extends State<NFCScreen> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              BlocBuilder<NfcCubit, NfcState>(
-                  builder: (context, state) {
-
+              BlocConsumer<NfcCubit, NfcState>(
+                  listener: (context, state) {
+                    if (state is NfcTimeout) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => const HomeScreen()),
+                      );
+                    }
+                  },
+                  builder: (context, state){
                     if (state is NfcLoading) {
                       pulseColor = mapColor['Initial'];
                     }
@@ -68,7 +77,7 @@ class _NFCScreenState extends State<NFCScreen> {
                       pulseColor = mapColor['Success'];
                     }
 
-                    if (state is NfcUnavailable || state is NfcNoData || state is NfcTimeout || state is NfcCheckError) {
+                    if (state is NfcUnavailable || state is NfcNoData || state is NfcCheckError) {
                       pulseColor = mapColor['Error'];
                     }
 
@@ -84,120 +93,11 @@ class _NFCScreenState extends State<NFCScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 10),
                           child: _buildWidget(state, AppLocalizations.of(context)),
-                        )
+                        ),
                       ],
                     );
-                  }),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void showIngresarAsistenciaDialog(BuildContext context) {
-    final controller = TextEditingController();
-
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (_) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 8,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Ingresar Asistencia',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: () => Navigator.of(context).pop(),
-                    child: const Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(Icons.close, size: 20),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              // Campo de correo con controller
-              TextField(
-                controller: controller,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'Correo electrónico Institucional',
-                  prefixIcon: const Icon(Icons.email_outlined),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                  hintText: 'you@edu.com',
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Confirmar
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    final text = controller.text.trim();
-                    if (text.isEmpty) {
-                      Navigator.of(context).pop();
-
-                      showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (_) => Dialog(
-                          insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
-                          child: AlertCart(
-                              icon: Icons.warning_amber_rounded,
-                              title: "Alerta",
-                              subtitle: "Alumno no encontrado",
-                              onTap: (){
-                                Navigator.of(context).pop();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (_) => const NFCScreen(tipoAcceso: TipoAcceso.Entrada)),
-                                );
-                              }
-                              ),
-                        )
-                      );
-                      return;
-                    } else {
-                      Navigator.of(context).pop();
-                      nfcCubit.escanearNfcEvent(widget.tipoAcceso);
-                    }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF23456e),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    minimumSize: const Size.fromHeight(48),
-                  ),
-                  child: const Text('Confirmar'),
-                ),
-              ),
-              const SizedBox(height: 12),
 
-              // Cancelar
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    minimumSize: const Size.fromHeight(48),
-                  ),
-                  child: const Text('Cancelar'),
-                ),
               ),
             ],
           ),
@@ -223,8 +123,16 @@ class _NFCScreenState extends State<NFCScreen> {
             ),
           ),
           ButtonCustom(
-            text: app.cancelButtonLabel,
-            onPressed: () {},
+            text: app.manualEntryButtonLabel,
+            onPressed: () {
+              nfcCubit.pauseScanning();
+              IngresarAsistenciaDialog.show(
+                  context: context,
+                  nfcCubit: nfcCubit,
+                  tipoAcceso: widget.tipoAcceso).then((_) {
+                nfcCubit.resumeScanning(widget.tipoAcceso);
+              });
+            },
           ),
         ],
       );
@@ -286,7 +194,7 @@ class _NFCScreenState extends State<NFCScreen> {
         ButtonCustom(
           text: app.manualEntryButtonLabel,
           onPressed: () {
-            showIngresarAsistenciaDialog(context);
+            IngresarAsistenciaDialog.show(context: context, nfcCubit: nfcCubit, tipoAcceso: widget.tipoAcceso);
           },
         ),
         ButtonCustom(
