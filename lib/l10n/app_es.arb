@@ -107,6 +107,36 @@
   "tapInSubtitleLabel": "Sistema de asistencias",
   "@tapInSubtitleLabel": {
     "description": "Etiqueta de la descripción de la app para el subtitulo del pie de página"
+  },
+
+  "alertaLabel": "Alerta",
+  "@alertaLabel": {
+    "description": "Etiqueta del titulo para el mensaje de alerta"
+  },
+
+  "alumnoNotFoundLabel": "Alumno no encontrado",
+  "@alumnoNotFoundLabel": {
+    "description": "Label para describir la razón del mensaje de alerta"
+  },
+
+  "ingresarAsistenciaLabel": "Ingresar Asistencia",
+  "@ingresarAsistenciaLabel":{
+    "description": "Descripció para ingresar asistencia"
+  },
+
+  "correoInstitucionalLabel": "Correo electrónico Institucional",
+  "@correoInstitucionalLabel": {
+    "description": "Titulo para indicar que se pone el correo institucional"
+  },
+
+  "ejemploCorreoLabel": "you@edu.com",
+  "@ejemploCorreoLabel": {
+    "description": "Ejemplo de como debe poner su correo el usuario"
+  },
+
+  "confirmLabel": "Confirmar",
+  "@confirmLabel": {
+    "description": "Texto que indica la confirmación de una acción"
   }
 
 }
