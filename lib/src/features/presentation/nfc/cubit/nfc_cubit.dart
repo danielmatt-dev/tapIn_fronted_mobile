@@ -4,7 +4,6 @@ import 'package:nfc_manager/nfc_manager.dart';
 import 'package:tapin/src/features/domain/use_cases/escanear_nfc.dart';
 import 'package:tapin/src/features/domain/entites/alumno_request.dart';
 import 'package:tapin/src/shared/exceptions/exceptions.dart';
-
 part 'nfc_state.dart';
 
 class NfcCubit extends Cubit<NfcState> {
