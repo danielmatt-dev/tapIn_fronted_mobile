@@ -141,10 +141,14 @@ class _NFCScreenState extends State<NFCScreen> {
     if (state is NfcCheckSuccess) {
       return Column(
         children: [
-          SvgPicture.asset(
-            'assets/images/icon_check_success.svg',
-            width: 90,
-            height: 90,
+          InkWell(
+            onTap: () => nfcCubit.escanearNfcEvent(widget.tipoAcceso),
+            child: SvgPicture.asset(
+              'assets/images/icon_check_success.svg',
+              width: 90,
+              height: 90,
+            ),
+            borderRadius: BorderRadius.circular(50),
           ),
           SizedBox(height: 20),
           TextCustomStyle(
@@ -155,12 +159,6 @@ class _NFCScreenState extends State<NFCScreen> {
           const SizedBox(height: 10,),
           TextCustomStyle(text: state.name),
           const SizedBox(height: 10,),
-          ButtonCustom(
-            text: app.continueButtonLabel,
-            onPressed: () {
-              nfcCubit.escanearNfcEvent(widget.tipoAcceso);
-            },
-          ),
         ],
       );
     }
@@ -181,31 +179,40 @@ class _NFCScreenState extends State<NFCScreen> {
 
     return Column(
       children: [
-        SvgPicture.asset(
-          'assets/images/icon_check_reload.svg',
-          width: 90,
-          height: 90,
+        InkWell(
+          onTap: () => nfcCubit.escanearNfcEvent(widget.tipoAcceso),
+          child: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: SvgPicture.asset(
+              'assets/images/icon_check_reload.svg',
+              width: 85,
+              height: 85,
+            ),
+          ),
+          borderRadius: BorderRadius.circular(50),
         ),
         SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.only(bottom: 18),
-          child: TextCustomStyle(text: messageError, fontWeight: FontWeight.bold, fontSize: 16,)
+          child: TextCustomStyle(
+            text: messageError,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
         ButtonCustom(
           text: app.manualEntryButtonLabel,
           onPressed: () {
-            IngresarAsistenciaDialog.show(context: context, nfcCubit: nfcCubit, tipoAcceso: widget.tipoAcceso);
+            IngresarAsistenciaDialog.show(
+              context: context,
+              nfcCubit: nfcCubit,
+              tipoAcceso: widget.tipoAcceso,
+            );
           },
-        ),
-        ButtonCustom(
-          text: app.retryButtonLabel,
-          onPressed: () {
-            nfcCubit.escanearNfcEvent(widget.tipoAcceso);
-          },
-          topPadding: 10,
         ),
       ],
     );
+
   }
 
 }

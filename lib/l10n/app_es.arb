@@ -69,7 +69,7 @@
     "description": "Titulo que indica el nombre de la secundaria "
   },
 
-  "loginMessageLabel": "Inicia sesión con tu cuenta institucional de Google",
+  "loginMessageLabel": "Inicia sesión con tu cuenta institucional",
   "@loginMessageLabel": {
     "description": "Mensaje para indicar el inicio de sesión del usuario"
   },

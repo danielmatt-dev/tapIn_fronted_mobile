@@ -66,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                    Text(
                     appLocations.loginMessageLabel,
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 16,
+                    style: TextStyle(fontSize: 18,
                     color: Colors.grey),
                   ),
                   SizedBox(
@@ -89,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                         child: Text(
                           appLocations.loginButtonLabel,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: Colors.grey,
                           ),
                         ),
