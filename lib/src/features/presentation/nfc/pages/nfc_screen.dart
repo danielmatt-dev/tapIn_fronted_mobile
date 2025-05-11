@@ -49,9 +49,9 @@ class _NFCScreenState extends State<NFCScreen> {
         title: Text(widget.tipoAcceso.name.toUpperCase()),
         centerTitle: true,
         titleTextStyle: TextStyle(
-          fontWeight: FontWeight.normal,
-          color: colorSchema.primary,
-          fontSize: 24
+            fontWeight: FontWeight.normal,
+            color: colorSchema.primary,
+            fontSize: 24
         ),
       ),
       body: SafeArea(
@@ -60,43 +60,50 @@ class _NFCScreenState extends State<NFCScreen> {
           child: Column(
             children: [
               BlocConsumer<NfcCubit, NfcState>(
-                  listener: (context, state) {
-                    if (state is NfcTimeout) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
+                listener: (context, state) {
+                  if (state is NfcTimeout) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
                           builder: (_) => const HomeScreen()),
-                      );
-                    }
-                  },
-                  builder: (context, state){
-                    if (state is NfcLoading) {
-                      pulseColor = mapColor['Initial'];
-                    }
-
-                    if (state is NfcCheckSuccess) {
-                      pulseColor = mapColor['Success'];
-                    }
-
-                    if (state is NfcUnavailable || state is NfcNoData || state is NfcCheckError) {
-                      pulseColor = mapColor['Error'];
-                    }
-
-                    return Column(
-                      children: [
-                        PulseIcon(
-                          icon: Icons.phone_android_rounded,
-                          pulseColor: pulseColor,
-                          iconSize: 60,
-                          innerSize: 100,
-                          pulseSize: width,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 10),
-                          child: _buildWidget(state, AppLocalizations.of(context)),
-                        ),
-                      ],
                     );
-                  },
+                  }
+
+                  if (state is NfcInactivityTimeout){
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (_) => const HomeScreen()),
+                    );
+                  }
+                },
+                builder: (context, state){
+                  if (state is NfcLoading) {
+                    pulseColor = mapColor['Initial'];
+                  }
+
+                  if (state is NfcCheckSuccess) {
+                    pulseColor = mapColor['Success'];
+                  }
+
+                  if (state is NfcUnavailable || state is NfcNoData || state is NfcCheckError) {
+                    pulseColor = mapColor['Error'];
+                  }
+
+                  return Column(
+                    children: [
+                      PulseIcon(
+                        icon: Icons.phone_android_rounded,
+                        pulseColor: pulseColor,
+                        iconSize: 60,
+                        innerSize: 100,
+                        pulseSize: width,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 10),
+                        child: _buildWidget(state, AppLocalizations.of(context)),
+                      ),
+                    ],
+                  );
+                },
 
               ),
             ],
@@ -141,6 +148,7 @@ class _NFCScreenState extends State<NFCScreen> {
     if (state is NfcCheckSuccess) {
       return Column(
         children: [
+
           InkWell(
             onTap: () => nfcCubit.escanearNfcEvent(widget.tipoAcceso),
             child: SvgPicture.asset(
@@ -203,11 +211,15 @@ class _NFCScreenState extends State<NFCScreen> {
         ButtonCustom(
           text: app.manualEntryButtonLabel,
           onPressed: () {
+            context.read<NfcCubit>().userActivity();
+            context.read<NfcCubit>().pauseScanning();
             IngresarAsistenciaDialog.show(
               context: context,
               nfcCubit: nfcCubit,
               tipoAcceso: widget.tipoAcceso,
-            );
+            ).then((_){
+              context.read<NfcCubit>().resumeScanning(widget.tipoAcceso);
+            });
           },
         ),
       ],
