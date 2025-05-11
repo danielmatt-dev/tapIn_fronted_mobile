@@ -24,6 +24,10 @@ class NfcCheckError extends NfcState {
   const NfcCheckError();
 }
 
+class NfcInactivityTimeout extends NfcState {
+  const NfcInactivityTimeout();
+}
+
 class NfcUnavailable extends NfcState {
   const NfcUnavailable();
 }
