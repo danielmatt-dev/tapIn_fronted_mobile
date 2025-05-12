@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pulsator/pulsator.dart';
 import 'package:tapin/src/core/styles/button_custom.dart';
 import 'package:tapin/src/core/styles/text_custom_style.dart';
@@ -16,9 +17,10 @@ import '../../home/pages/home_screen.dart';
 class NFCScreen extends StatefulWidget {
 
   final TipoAcceso tipoAcceso;
+  final GoogleSignInAccount user;
 
 
-  const NFCScreen({super.key, required this.tipoAcceso});
+  const NFCScreen({super.key, required this.tipoAcceso, required this.user});
 
   @override
   State<NFCScreen> createState() => _NFCScreenState();
@@ -64,14 +66,14 @@ class _NFCScreenState extends State<NFCScreen> {
                   if (state is NfcTimeout) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                          builder: (_) => const HomeScreen()),
+                          builder: (_) => HomeScreen(user: widget.user,)),
                     );
                   }
 
                   if (state is NfcInactivityTimeout){
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                          builder: (_) => const HomeScreen()),
+                          builder: (_) => HomeScreen(user: widget.user,)),
                     );
                   }
                 },

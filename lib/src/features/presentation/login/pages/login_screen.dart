@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:tapin/src/features/presentation/home/pages/home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../data/auth/google_auth_service.dart';
+
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  final _authService = GoogleAuthService();
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +75,15 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (_) => const HomeScreen(),
-                          ),
-                        );
+                      onPressed: () async {
+                        final user = await _authService.signIn();
+                        if (user != null) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => HomeScreen(user: user),
+                            ),
+                          );
+                        }
                       },
                       icon: Image.asset(
                         'assets/images/Google.png',
