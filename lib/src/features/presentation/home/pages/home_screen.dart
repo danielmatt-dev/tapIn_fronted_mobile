@@ -46,15 +46,33 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         title: null,
         actions: [
-          IconButton(
-            icon: Icon(Icons.account_circle, color: colorScheme.primary, size: 40),
-            onPressed: () {
-              ProfileDialog.show(context, email: widget.user.email, onLogout: _logout);
+          // Reemplazamos IconButton por GestureDetector + CircleAvatar
+          GestureDetector(
+            onTap: () {
+              ProfileDialog.show(
+                context,
+                email: widget.user.email,
+                photoUrl: widget.user.photoUrl,
+                onLogout: _logout,
+              );
             },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: CircleAvatar(
+                radius: 20,
+                backgroundImage: widget.user.photoUrl != null
+                    ? NetworkImage(widget.user.photoUrl!)
+                    : null,
+                child: widget.user.photoUrl == null
+                    ? const Icon(Icons.account_box_rounded, size: 24)
+                    : null,
+                backgroundColor: Colors.indigo,
+              ),
+            ),
           ),
-          const SizedBox(width: 12), // un poco de espacio al borde
         ],
       ),
+
 
 
       body: Column(

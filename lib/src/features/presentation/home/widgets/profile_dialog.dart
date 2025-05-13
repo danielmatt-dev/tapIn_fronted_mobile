@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ProfileDialog {
+  /// Muestra la carta de perfil con [email], la foto de perfil opcional [photoUrl]
+  /// y llama a [onLogout] al cerrar sesión.
   static void show(
       BuildContext context, {
         required String email,
+        String? photoUrl,
         required VoidCallback onLogout,
       }) {
     showDialog(
@@ -17,10 +20,21 @@ class ProfileDialog {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.account_circle,
-                    size: 64, color: Theme.of(context).colorScheme.primary),
+                // Si hay photoUrl, la muestra; si no, usa un icono
+                if (photoUrl != null && photoUrl.isNotEmpty) ...[
+                  CircleAvatar(
+                    radius: 32,
+                    backgroundImage: NetworkImage(photoUrl),
+                  ),
+                ] else ...[
+                  Icon(
+                    Icons.account_circle,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ],
                 const SizedBox(height: 12),
-                Text("Correo electronico:"),
+                const Text("Correo electrónico:"),
                 Text(email, style: const TextStyle(fontSize: 16)),
                 const SizedBox(height: 16),
                 ElevatedButton(

@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
@@ -13,6 +14,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 void main() async {
   await dotenv.load(fileName: '.env');
   await initInjections();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   tz.initializeTimeZones();
   runApp(const BlocProviders());
 }

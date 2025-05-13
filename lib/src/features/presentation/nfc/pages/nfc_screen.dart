@@ -64,17 +64,11 @@ class _NFCScreenState extends State<NFCScreen> {
               BlocConsumer<NfcCubit, NfcState>(
                 listener: (context, state) {
                   if (state is NfcTimeout) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (_) => HomeScreen(user: widget.user,)),
-                    );
+                    Navigator.pop(context);
                   }
 
                   if (state is NfcInactivityTimeout){
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (_) => HomeScreen(user: widget.user,)),
-                    );
+                    Navigator.pop(context);
                   }
                 },
                 builder: (context, state){
@@ -213,14 +207,12 @@ class _NFCScreenState extends State<NFCScreen> {
         ButtonCustom(
           text: app.manualEntryButtonLabel,
           onPressed: () {
-            context.read<NfcCubit>().userActivity();
-            context.read<NfcCubit>().pauseScanning();
+            nfcCubit.pauseScanning();
             IngresarAsistenciaDialog.show(
-              context: context,
-              nfcCubit: nfcCubit,
-              tipoAcceso: widget.tipoAcceso,
-            ).then((_){
-              context.read<NfcCubit>().resumeScanning(widget.tipoAcceso);
+                context: context,
+                nfcCubit: nfcCubit,
+                tipoAcceso: widget.tipoAcceso).then((_) {
+              nfcCubit.resumeScanning(widget.tipoAcceso);
             });
           },
         ),
