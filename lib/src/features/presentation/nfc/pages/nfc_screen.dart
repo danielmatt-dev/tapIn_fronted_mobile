@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pulsator/pulsator.dart';
 import 'package:tapin/src/core/styles/button_custom.dart';
 import 'package:tapin/src/core/styles/text_custom_style.dart';
@@ -16,9 +17,10 @@ import '../../home/pages/home_screen.dart';
 class NFCScreen extends StatefulWidget {
 
   final TipoAcceso tipoAcceso;
+  final GoogleSignInAccount user;
 
 
-  const NFCScreen({super.key, required this.tipoAcceso});
+  const NFCScreen({super.key, required this.tipoAcceso, required this.user});
 
   @override
   State<NFCScreen> createState() => _NFCScreenState();
@@ -62,17 +64,11 @@ class _NFCScreenState extends State<NFCScreen> {
               BlocConsumer<NfcCubit, NfcState>(
                 listener: (context, state) {
                   if (state is NfcTimeout) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (_) => const HomeScreen()),
-                    );
+                    Navigator.pop(context);
                   }
 
                   if (state is NfcInactivityTimeout){
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (_) => const HomeScreen()),
-                    );
+                    Navigator.pop(context);
                   }
                 },
                 builder: (context, state){
@@ -211,14 +207,12 @@ class _NFCScreenState extends State<NFCScreen> {
         ButtonCustom(
           text: app.manualEntryButtonLabel,
           onPressed: () {
-            context.read<NfcCubit>().userActivity();
-            context.read<NfcCubit>().pauseScanning();
+            nfcCubit.pauseScanning();
             IngresarAsistenciaDialog.show(
-              context: context,
-              nfcCubit: nfcCubit,
-              tipoAcceso: widget.tipoAcceso,
-            ).then((_){
-              context.read<NfcCubit>().resumeScanning(widget.tipoAcceso);
+                context: context,
+                nfcCubit: nfcCubit,
+                tipoAcceso: widget.tipoAcceso).then((_) {
+              nfcCubit.resumeScanning(widget.tipoAcceso);
             });
           },
         ),

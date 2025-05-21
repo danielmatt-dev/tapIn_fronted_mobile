@@ -1,19 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tapin/src/core/theme/colors.dart';
+import 'package:tapin/src/features/data/auth/google_auth_service.dart';
 import 'package:tapin/src/features/domain/entites/alumno_request.dart';
 import 'package:tapin/src/features/presentation/home/widgets/option_cart.dart';
+import 'package:tapin/src/features/presentation/home/widgets/profile_dialog.dart';
 import 'package:tapin/src/features/presentation/nfc/pages/nfc_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tapin/src/features/presentation/nfc/widgets/ingresar_asistencia_dialog.dart';
+import 'package:tapin/src/shared/widgets/alert_cart.dart';
+
+import '../../login/pages/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final GoogleSignInAccount user;
+
+  const HomeScreen({required this.user, super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _authService = GoogleAuthService();
   int _selectedIndex = 0;
   void _onItemTapped(int index) => setState(() => _selectedIndex = index);
+
+  void _logout() async {
+    await _authService.signOut();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => LoginScreen(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +45,55 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: colorScheme.onPrimary,
         elevation: 0,
-        toolbarHeight: 0,
+        title: null,
+        actions: [
+          // Reemplazamos IconButton por GestureDetector + CircleAvatar
+          GestureDetector(
+            onTap: () {
+              ProfileDialog.show(
+                context,
+                displayName: widget.user.displayName!,
+                email: widget.user.email,
+                photoUrl: widget.user.photoUrl,
+                onLogout: _logout,
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child:
+              Container(
+                padding: const EdgeInsets.all(2), // grosor del borde
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: LightColors.primaryVariant, // o colorScheme.primary
+                    width: 2,
+                  ),
+                ),
+                child:
+                CircleAvatar(
+                  radius: 20,
+                  backgroundImage: widget.user.photoUrl != null
+                      ? NetworkImage(widget.user.photoUrl!)
+                      : null,
+                  child: widget.user.photoUrl == null
+                      ? const Icon(Icons.account_box_rounded, size: 24)
+                      : null,
+                  backgroundColor: LightColors.primaryVariant,
+                ),
+              ),
+
+            ),
+          ),
+        ],
       ),
+
+
 
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 24, bottom: 16),
+            padding: const EdgeInsets.only(top: 0.0, bottom: 16),
             child: Center(
               child: Image.asset(
                 'assets/images/Escudo.png',
@@ -55,7 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Navigator.push(context,
                         MaterialPageRoute(
-                          builder: (_) => const NFCScreen(tipoAcceso: TipoAcceso.Entrada),
+                          builder: (_) => NFCScreen(tipoAcceso: TipoAcceso.Entrada,
+                          user: widget.user,),
                         ),
                       );
                     },
@@ -69,7 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Navigator.push(context,
                         MaterialPageRoute(
-                          builder: (_) => const NFCScreen(tipoAcceso: TipoAcceso.Salida),
+                          builder: (_) => NFCScreen(tipoAcceso: TipoAcceso.Salida,
+                          user: widget.user,),
                         ),
                       );
                     },

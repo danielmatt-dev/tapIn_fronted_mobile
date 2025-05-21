@@ -30,6 +30,8 @@ dependencies:
   # Cliente HTTP #
   dio: ^5.4.3+1
 
+  cron: ^0.3.0
+
   # Anotaciones para JSON serialización/deserialización #
   json_annotation: ^4.9.0
 
@@ -62,6 +64,7 @@ dependencies:
   timezone: ^0.10.0
   pulsator: ^1.0.0+2
   flutter_svg: ^2.1.0
+  google_sign_in: ^6.3.0
 
 dev_dependencies:
   flutter_test:

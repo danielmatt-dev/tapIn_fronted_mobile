@@ -16,15 +16,13 @@ class NfcCubit extends Cubit<NfcState> {
   Timer? _inactivityTimer;
   bool _isPaused = false;
 
-  NfcCubit({
-    required this.escanearNFC
-  }) : super(const NfcInitial());
+  NfcCubit({ required this.escanearNFC }) : super(const NfcInitial());
 
   Future<void> escanearNfcEvent(TipoAcceso tipoAcceso) async {
     if (_isPaused) return;
 
-    _cancelInactivityTimer();
-    _startScanTimer();
+    _cancelInactivityTimer();        // cancelar cualquier inactividad anterior
+    _startScanTimer();               // timeout de escaneo
     emit(const NfcLoading());
 
     final result = await escanearNFC.call(tipoAcceso);
@@ -36,9 +34,7 @@ class NfcCubit extends Cubit<NfcState> {
     result.fold(
       _handleException,
           (data) {
-        final id = data[0];
-        final email = data[1];
-        final name = data[2];
+        final id = data[0], email = data[1], name = data[2];
         emit(NfcCheckSuccess(id: id, email: email, name: name));
       },
     );
@@ -61,20 +57,17 @@ class NfcCubit extends Cubit<NfcState> {
   void _handleException(Exception exception) {
     if (exception is NFCUnavailableException) {
       emit(const NfcUnavailable());
-      return;
-    }
-    if (exception is NfcNoDataException) {
+    } else if (exception is NfcNoDataException) {
       emit(const NfcNoData());
-      return;
-    }
-    if (exception is NFCTimeoutException) {
+    } else if (exception is NFCTimeoutException) {
       emit(const NfcTimeout());
-      return;
+    } else {
+      emit(const NfcCheckError());
     }
-    emit(const NfcCheckError());
-    _startInactivityTimer();
+    _startInactivityTimer();  // al emitir cualquier error, lanza el temporizador de inactividad
   }
 
+  /// Arranca el temporizador de inactividad (30s) tras un error
   void _startInactivityTimer() {
     _inactivityTimer?.cancel();
     _inactivityTimer = Timer(_inactivityDuration, () {
@@ -88,6 +81,7 @@ class NfcCubit extends Cubit<NfcState> {
     _inactivityTimer = null;
   }
 
+  /// Pausa completamente el escaneo y todos los timers
   void pauseScanning() {
     _isPaused = true;
     _cancelScanTimer();
@@ -95,13 +89,15 @@ class NfcCubit extends Cubit<NfcState> {
     NfcManager.instance.stopSession();
   }
 
+  /// Reanuda el escaneo desde cero (resetea pausa e invoca escaneo)
   void resumeScanning(TipoAcceso tipoAcceso) {
     _isPaused = false;
     escanearNfcEvent(tipoAcceso);
   }
 
+  /// Debe llamarse desde la UI ante cualquier interacción del usuario
   void userActivity() {
-    _cancelInactivityTimer();
+    _cancelInactivityTimer();  // cancela la navegación automática a Home
   }
 
   @override
