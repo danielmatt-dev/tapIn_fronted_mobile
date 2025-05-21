@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tapin/src/core/theme/colors.dart';
 import 'package:tapin/src/features/data/auth/google_auth_service.dart';
 import 'package:tapin/src/features/domain/entites/alumno_request.dart';
 import 'package:tapin/src/features/presentation/home/widgets/option_cart.dart';
@@ -51,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               ProfileDialog.show(
                 context,
+                displayName: widget.user.displayName!,
                 email: widget.user.email,
                 photoUrl: widget.user.photoUrl,
                 onLogout: _logout,
@@ -58,16 +60,29 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 12),
-              child: CircleAvatar(
-                radius: 20,
-                backgroundImage: widget.user.photoUrl != null
-                    ? NetworkImage(widget.user.photoUrl!)
-                    : null,
-                child: widget.user.photoUrl == null
-                    ? const Icon(Icons.account_box_rounded, size: 24)
-                    : null,
-                backgroundColor: Colors.indigo,
+              child:
+              Container(
+                padding: const EdgeInsets.all(2), // grosor del borde
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: LightColors.primaryVariant, // o colorScheme.primary
+                    width: 2,
+                  ),
+                ),
+                child:
+                CircleAvatar(
+                  radius: 20,
+                  backgroundImage: widget.user.photoUrl != null
+                      ? NetworkImage(widget.user.photoUrl!)
+                      : null,
+                  child: widget.user.photoUrl == null
+                      ? const Icon(Icons.account_box_rounded, size: 24)
+                      : null,
+                  backgroundColor: LightColors.primaryVariant,
+                ),
               ),
+
             ),
           ),
         ],

@@ -14,6 +14,10 @@ class GoogleAuthService {
     }
   }
 
+  Future<GoogleSignInAccount?> currentUser() async {
+    return _googleSignIn.signInSilently();
+  }
+
   Future<void> signOut() async {
     await _googleSignIn.disconnect();
   }

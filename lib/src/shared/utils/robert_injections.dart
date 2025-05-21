@@ -9,7 +9,7 @@ initRobertInjections() async{
 
   /* Datasource remote */
   sl.registerSingleton<DataSourceRemote>(
-      DataSourceRemoteImpl(dio: sl()));
+      DataSourceRemoteImpl(dio: sl(), datasourcelocal: sl()), );
 
   sl.registerSingleton<AlumnoMapperImplement>(
     AlumnoMapperImplement());

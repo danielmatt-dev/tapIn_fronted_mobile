@@ -7,7 +7,7 @@ class BuscarToken {
   BuscarToken({ required DataSourceLocal local }): _local = local;
 
   String call(params) {
-    return _local.getToken();
+    return _local.getToken() ?? "";
   }
 
 }
