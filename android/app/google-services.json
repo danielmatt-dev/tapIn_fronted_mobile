@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "136929181439",
+    "project_id": "tap-in-67a84",
+    "storage_bucket": "tap-in-67a84.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136929181439:android:c65427c8c899857a3c16ca",
+        "android_client_info": {
+          "package_name": "com.scolaris.tapin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "136929181439-5o4rugj9f4jgtl7tn5itma09p6rke65v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scolaris.tapin",
+            "certificate_hash": "7fbccb42af7983183bbe60363494b516b16f20f9"
+          }
+        },
+        {
+          "client_id": "136929181439-42skq2evrpofev9b29fk38n3pb6up1fr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-Gh5ZwyvoayVx4PHJCJraMd9WXaJpi3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136929181439-42skq2evrpofev9b29fk38n3pb6up1fr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
