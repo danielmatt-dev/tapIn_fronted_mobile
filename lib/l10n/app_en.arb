@@ -1,0 +1,142 @@
+{
+  "entrada": "Entrada",
+  "@entrada": {
+    "description": "Título para registrar asistencia de entrada"
+  },
+
+  "bringDeviceCloser": "Acerque el dispositivo",
+  "@bringDeviceCloser": {
+    "description": "Texto corto pidiendo acercar el dispositivo al lector NFC"
+  },
+
+  "placeDeviceNearReader": "Coloque su dispositivo cerca del lector NFC y manténgalo estable hasta que se complete el escaneo.",
+  "@placeDeviceNearReader": {
+    "description": "Instrucción detallada para escanear correctamente usando NFC"
+  },
+
+  "nfcUnavailableMessage": "NFC no encontrado o no habilitado",
+  "@nfcUnavailableMessage": {
+    "description": "Mensaje cuando NFC no está disponible"
+  },
+
+  "nfcNoDataMessage": "No hay datos en el NFC",
+  "@nfcNoDataMessage": {
+    "description": "Mensaje cuando no se encuentran datos NFC"
+  },
+
+  "nfcCheckErrorMessage": "Error en el escaneo",
+  "@nfcCheckErrorMessage": {
+    "description": "Mensaje cuando falla el escaneo NFC"
+  },
+
+  "nfcCheckSuccessMessage": "Escaneo exitoso",
+  "@nfcCheckSuccessMessage": {
+    "description": "Mensaje cuando el escaneo NFC es exitoso"
+  },
+
+  "nfcTimeoutMessage": "Tiempo de espera de conexión NFC agotado",
+  "@nfcTimeoutMessage": {
+    "description": "Mensaje cuando se agota el tiempo de espera de la conexión NFC"
+  },
+
+  "cancelButtonLabel": "Cancelar",
+  "@cancelButtonLabel": {
+    "description": "Etiqueta para el botón de cancelar"
+  },
+
+  "attendanceRegistered": "Asistencia Registrada",
+  "@attendanceRegistered": {
+    "description": "Título que indica que la asistencia fue registrada correctamente"
+  },
+
+  "continueButtonLabel": "Continuar",
+  "@continueButtonLabel": {
+    "description": "Etiqueta del botón para continuar después de registrar asistencia"
+  },
+
+  "manualEntryButtonLabel": "Ingresar manualmente",
+  "@manualEntryButtonLabel": {
+    "description": "Etiqueta para el botón de ingresar manualmente datos de asistencia"
+  },
+
+  "retryButtonLabel": "Volver a intentar",
+  "@retryButtonLabel": {
+    "description": "Etiqueta para el botón de volver a intentar el escaneo o la acción fallida"
+  },
+
+  "loginSchoolLabel": "Secundaria Instituto Patria",
+  "@loginSchoolLabel": {
+    "description": "Titulo que indica el nombre de la secundaria "
+  },
+
+  "loginMessageLabel": "Inicia sesión con tu cuenta institucional",
+  "@loginMessageLabel": {
+    "description": "Mensaje para indicar el inicio de sesión del usuario"
+  },
+
+  "loginButtonLabel": "Iniciar sesión con Google",
+  "@loginButtonLabel": {
+    "description": "Etiqueta para el boton de iniciar sesión con Google"
+  },
+
+  "entranceTitleLabel": "Entrada",
+  "@entranceTitleLabel": {
+    "description": "Etiqueta del titulo para el boton de entrada"
+  },
+
+  "entranceSubtitleLabel": "Registra la llegada de los alumnos y confirma su asistencia",
+  "@entranceSubtitleLabel": {
+    "description": "Etiqueta del subtitulo para el boton de entrada"
+  },
+
+  "exitTitleLabel": "Salida",
+  "@exitTitleLabel": {
+    "description": "Etiqueta del titulo para el boton de salida"
+  },
+
+  "exitSubtitleLabel": "Marca la salida de los alumnos y finaliza su asistencia",
+  "@exitSubtitleLabel": {
+    "description": "Etiqueta del subtitulo para el boton de salida"
+  },
+
+  "tapInLabel": "TapIn",
+  "@tapInLabel": {
+    "description": "Etiqueta del nombre de la app para el titulo del pie de página"
+  },
+
+  "tapInSubtitleLabel": "Sistema de asistencias",
+  "@tapInSubtitleLabel": {
+    "description": "Etiqueta de la descripción de la app para el subtitulo del pie de página"
+  },
+
+  "alertaLabel": "Alerta",
+  "@alertaLabel": {
+    "description": "Etiqueta del titulo para el mensaje de alerta"
+  },
+
+  "alumnoNotFoundLabel": "Alumno no encontrado",
+  "@alumnoNotFoundLabel": {
+    "description": "Label para describir la razón del mensaje de alerta"
+  },
+
+  "ingresarAsistenciaLabel": "Ingresar Asistencia",
+  "@ingresarAsistenciaLabel":{
+    "description": "Descripció para ingresar asistencia"
+  },
+
+  "correoInstitucionalLabel": "Correo electrónico Institucional",
+  "@correoInstitucionalLabel": {
+    "description": "Titulo para indicar que se pone el correo institucional"
+  },
+
+  "ejemploCorreoLabel": "you@edu.com",
+  "@ejemploCorreoLabel": {
+    "description": "Ejemplo de como debe poner su correo el usuario"
+  },
+
+  "confirmLabel": "Confirmar",
+  "@confirmLabel": {
+    "description": "Texto que indica la confirmación de una acción"
+  }
+
+}
