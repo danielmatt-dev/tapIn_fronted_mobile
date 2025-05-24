@@ -15,3 +15,5 @@ class BadCredentialsException implements Exception {}
 class ForBittenException implements Exception {}
 
 class TimeoutException implements Exception {}
+
+class AuthCancelledException implements Exception {}

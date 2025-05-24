@@ -6,4 +6,6 @@ class DataSourceRemoteEndpoints{
 
   static String get = '$baseUrl/';
 
+  static String login = '$baseUrl/personal/auth/social/google/';
+
 }

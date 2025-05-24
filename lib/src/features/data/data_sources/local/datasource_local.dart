@@ -6,6 +6,14 @@ abstract class DataSourceLocal {
 
   Future<bool> setToken(String token);
 
+  String? getRol();
+
+  Future<bool> setRole(String role);
+
+  int? getExpiracion();
+
+  String? getFechaEmision();
+
   Future<bool> guardarAlumnos(List<AlumnoResponseModel> alumnos);
 
   List<AlumnoResponseModel> buscarListaAlumnos();

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:tapin/src/features/data/data_sources/remote/datasource_remote.dart';
@@ -104,6 +102,42 @@ class DataSourceRemoteImpl extends DataSourceRemote{
       if (statusCode == 404) {
         return Left(ResourceNotFoundException());
       }
+
+      return Left(Exception('HTTP ${statusCode ?? 'error'}: ${e.message}'));
+    } catch (e) {
+      return Left(Exception(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Exception, bool>> login(String email, String idToken) async {
+
+    try {
+
+      final endpoint = DataSourceRemoteEndpoints.login;
+
+      final response = await _dio.post(
+        endpoint,
+        data: {'id_token': idToken, 'email': email}
+      );
+
+      if (response.statusCode == 200) {
+        return const Right(true);
+      }
+
+      return const Right(false);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        return Left(TimeoutException());
+      }
+
+      final statusCode = e.response?.statusCode;
+      if (statusCode == 400) return Left(BadRequestException());
+      if (statusCode == 401) return Left(BadCredentialsException());
+      if (statusCode == 403) return Left(ForBittenException());
+      if (statusCode == 404) return Left(ResourceNotFoundException());
 
       return Left(Exception('HTTP ${statusCode ?? 'error'}: ${e.message}'));
     } catch (e) {

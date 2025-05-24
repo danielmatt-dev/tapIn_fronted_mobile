@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tapin/src/features/presentation/home/pages/home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/auth/google_auth_service.dart';
+import '../../home/pages/home_screen.dart';
 
 
 class LoginScreen extends StatelessWidget {
@@ -69,7 +69,7 @@ class LoginScreen extends StatelessWidget {
                    Text(
                     appLocations.loginMessageLabel,
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 18,
+                    style: const TextStyle(fontSize: 18,
                     color: Colors.grey),
                   ),
                   SizedBox(
@@ -91,10 +91,10 @@ class LoginScreen extends StatelessWidget {
                         width: 24,
                       ),
                       label: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         child: Text(
                           appLocations.loginButtonLabel,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             color: Colors.grey,
                           ),
