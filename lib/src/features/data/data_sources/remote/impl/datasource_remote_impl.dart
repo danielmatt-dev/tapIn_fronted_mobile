@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:tapin/src/features/data/data_sources/remote/datasource_remote.dart';
@@ -30,13 +28,10 @@ class DataSourceRemoteImpl extends DataSourceRemote{
     try{
       final endpoint = DataSourceRemoteEndpoints.post;
       final response = await _dio.post(endpoint,
-      data: alumno.toJson(),
-      options: Options(
-        headers: _headers
-      )
+        data: alumno.toJson(),
       );
 
-      if(response.statusCode == 200){
+      if(response.statusCode == 201){
         return const Right(true);
       }
       return const Right(false);

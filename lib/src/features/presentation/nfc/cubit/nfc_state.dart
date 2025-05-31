@@ -32,6 +32,10 @@ class NfcUnavailable extends NfcState {
   const NfcUnavailable();
 }
 
+class NfcUnavailableAlumno extends NfcState {
+  const NfcUnavailableAlumno();
+}
+
 class NfcNoData extends NfcState {
   const NfcNoData();
 }

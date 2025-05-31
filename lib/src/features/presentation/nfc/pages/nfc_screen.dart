@@ -6,13 +6,12 @@ import 'package:pulsator/pulsator.dart';
 import 'package:tapin/src/core/styles/button_custom.dart';
 import 'package:tapin/src/core/styles/text_custom_style.dart';
 import 'package:tapin/src/core/theme/colors.dart';
+import 'package:tapin/src/features/data/data_sources/local/datasource_local.dart';
 import 'package:tapin/src/features/domain/entites/alumno_request.dart';
 import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
 import 'package:tapin/src/features/presentation/nfc/widgets/ingresar_asistencia_dialog.dart';
 import 'package:tapin/src/shared/utils/injections.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../home/pages/home_screen.dart';
 
 class NFCScreen extends StatefulWidget {
 
@@ -29,6 +28,7 @@ class NFCScreen extends StatefulWidget {
 class _NFCScreenState extends State<NFCScreen> {
 
   final nfcCubit = sl<NfcCubit>();
+  final local = sl<DataSourceLocal>();
   Color pulseColor = mapColor['Initial'];
 
   @override
@@ -45,6 +45,10 @@ class _NFCScreenState extends State<NFCScreen> {
   Widget build(BuildContext context) {
     final colorSchema = Theme.of(context).colorScheme;
     final width = MediaQuery.of(context).size.width;
+    final role = local.getRole();
+    final isAdmin = role == null
+        ? true
+        : role == 'administrativo';
 
     return Scaffold(
       appBar: AppBar(
@@ -80,7 +84,7 @@ class _NFCScreenState extends State<NFCScreen> {
                     pulseColor = mapColor['Success'];
                   }
 
-                  if (state is NfcUnavailable || state is NfcNoData || state is NfcCheckError) {
+                  if (state is NfcUnavailable || state is NfcNoData || state is NfcCheckError || state is NfcUnavailableAlumno) {
                     pulseColor = mapColor['Error'];
                   }
 
@@ -95,7 +99,7 @@ class _NFCScreenState extends State<NFCScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 10),
-                        child: _buildWidget(state, AppLocalizations.of(context)),
+                        child: _buildWidget(state, AppLocalizations.of(context), isAdmin),
                       ),
                     ],
                   );
@@ -109,7 +113,7 @@ class _NFCScreenState extends State<NFCScreen> {
     );
   }
 
-  Widget _buildWidget(NfcState state, AppLocalizations? app) {
+  Widget _buildWidget(NfcState state, AppLocalizations? app, bool isAdmin) {
 
     if (state is NfcLoading) {
       return Column(
@@ -125,18 +129,19 @@ class _NFCScreenState extends State<NFCScreen> {
               textAlign: TextAlign.center,
             ),
           ),
-          ButtonCustom(
-            text: app.manualEntryButtonLabel,
-            onPressed: () {
-              nfcCubit.pauseScanning();
-              IngresarAsistenciaDialog.show(
-                  context: context,
-                  nfcCubit: nfcCubit,
-                  tipoAcceso: widget.tipoAcceso).then((_) {
-                nfcCubit.resumeScanning(widget.tipoAcceso);
-              });
-            },
-          ),
+          if (!isAdmin)
+            ButtonCustom(
+              text: app.manualEntryButtonLabel,
+              onPressed: () {
+                nfcCubit.pauseScanning();
+                IngresarAsistenciaDialog.show(
+                    context: context,
+                    nfcCubit: nfcCubit,
+                    tipoAcceso: widget.tipoAcceso).then((_) {
+                  nfcCubit.resumeScanning(widget.tipoAcceso);
+                });
+              },
+            ),
         ],
       );
     }
@@ -147,14 +152,14 @@ class _NFCScreenState extends State<NFCScreen> {
 
           InkWell(
             onTap: () => nfcCubit.escanearNfcEvent(widget.tipoAcceso),
+            borderRadius: BorderRadius.circular(50),
             child: SvgPicture.asset(
               'assets/images/icon_check_success.svg',
               width: 90,
               height: 90,
             ),
-            borderRadius: BorderRadius.circular(50),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextCustomStyle(
             text: app!.nfcCheckSuccessMessage,
             fontWeight: FontWeight.bold,
@@ -173,6 +178,10 @@ class _NFCScreenState extends State<NFCScreen> {
       messageError = app.nfcNoDataMessage;
     }
 
+    if (state is NfcUnavailableAlumno) {
+      messageError = 'El alumno escaneado se encuentra dado de baja';
+    }
+
     if (state is NfcUnavailable) {
       messageError = app.nfcUnavailableMessage;
     }
@@ -185,6 +194,7 @@ class _NFCScreenState extends State<NFCScreen> {
       children: [
         InkWell(
           onTap: () => nfcCubit.escanearNfcEvent(widget.tipoAcceso),
+          borderRadius: BorderRadius.circular(50),
           child: Padding(
             padding: const EdgeInsets.all(6.0),
             child: SvgPicture.asset(
@@ -193,9 +203,8 @@ class _NFCScreenState extends State<NFCScreen> {
               height: 85,
             ),
           ),
-          borderRadius: BorderRadius.circular(50),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.only(bottom: 18),
           child: TextCustomStyle(
@@ -204,18 +213,19 @@ class _NFCScreenState extends State<NFCScreen> {
             fontSize: 16,
           ),
         ),
-        ButtonCustom(
-          text: app.manualEntryButtonLabel,
-          onPressed: () {
-            nfcCubit.pauseScanning();
-            IngresarAsistenciaDialog.show(
-                context: context,
-                nfcCubit: nfcCubit,
-                tipoAcceso: widget.tipoAcceso).then((_) {
-              nfcCubit.resumeScanning(widget.tipoAcceso);
-            });
-          },
-        ),
+        if (!isAdmin)
+          ButtonCustom(
+            text: app.manualEntryButtonLabel,
+            onPressed: () {
+              nfcCubit.pauseScanning();
+              IngresarAsistenciaDialog.show(
+                  context: context,
+                  nfcCubit: nfcCubit,
+                  tipoAcceso: widget.tipoAcceso).then((_) {
+                nfcCubit.resumeScanning(widget.tipoAcceso);
+              });
+            },
+          ),
       ],
     );
 

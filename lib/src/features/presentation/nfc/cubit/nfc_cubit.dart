@@ -1,22 +1,26 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:tapin/src/features/domain/use_cases/escanear_nfc.dart';
 import 'package:tapin/src/features/domain/entites/alumno_request.dart';
+import 'package:tapin/src/features/domain/use_cases/registrar_asistencia_alumno.dart';
 import 'package:tapin/src/shared/exceptions/exceptions.dart';
 part 'nfc_state.dart';
 
 class NfcCubit extends Cubit<NfcState> {
   final EscanearNFC escanearNFC;
+  final RegistrarAsistenciaAlumno registrarAsistenciaAlumno;
 
-  static const _scanTimeout = Duration(seconds: 30);
-  static const _inactivityDuration = Duration(seconds: 30);
+  static const _scanTimeout = Duration(seconds: 10);
+  static const _inactivityDuration = Duration(seconds: 10);
 
   Timer? _scanTimer;
   Timer? _inactivityTimer;
   bool _isPaused = false;
 
-  NfcCubit({ required this.escanearNFC }) : super(const NfcInitial());
+  NfcCubit({ required this.escanearNFC, required this.registrarAsistenciaAlumno })
+      : super(const NfcInitial());
 
   Future<void> escanearNfcEvent(TipoAcceso tipoAcceso) async {
     if (_isPaused) return;
@@ -33,9 +37,33 @@ class NfcCubit extends Cubit<NfcState> {
 
     result.fold(
       _handleException,
-          (data) {
+          (data) async {
         final id = data[0], email = data[1], name = data[2];
-        emit(NfcCheckSuccess(id: id, email: email, name: name));
+
+        if (id == '5678') {
+          emit(const NfcUnavailableAlumno());
+          return;
+        }
+
+        DateTime ahora = DateTime.now();
+
+        final fechaFormateada = DateFormat('yyyy-MM-dd').format(ahora);
+
+        final horaFormateada = DateFormat('HH:mm:ss').format(ahora);
+
+        final eitherAsistencia = await registrarAsistenciaAlumno.call(
+            AlumnoRequest(
+                idNfc: id,
+                fecha: fechaFormateada,
+                hora: horaFormateada,
+                tipoAcceso: tipoAcceso,
+                correo: null
+            ));
+
+        eitherAsistencia.fold(
+                (ex) => emit(const NfcCheckError()),
+                (success) =>
+                    emit(NfcCheckSuccess(id: id, email: email, name: name)));
       },
     );
   }
