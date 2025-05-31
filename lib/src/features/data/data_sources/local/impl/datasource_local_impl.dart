@@ -39,4 +39,14 @@ class DataSourceLocalImpl extends DataSourceLocal {
     return await _sharedPreferences.setStringList("alumnos", alumnosJson);
   }
 
+  @override
+  String? getRole() {
+    return _sharedPreferences.getString("role");
+  }
+
+  @override
+  Future<bool> setRole(String role) async {
+    return await _sharedPreferences.setString("role", role);
+  }
+
 }

@@ -10,7 +10,12 @@ class AlumnoMapperImplement extends Mapper<AlumnoRequest, AlumnoRequestModel>{
 
   @override
   AlumnoRequestModel toModel(AlumnoRequest entity) {
-    return AlumnoRequestModel(idNfc: entity.idNfc, fecha: entity.fecha, hora: entity.hora, tipoAcceso: entity.tipoAcceso);
+    return AlumnoRequestModel(
+        idNfc: entity.idNfc,
+        correo: entity.correo,
+        fecha: entity.fecha,
+        hora: entity.hora,
+        tipoAcceso: entity.tipoAcceso);
   }
 
 }

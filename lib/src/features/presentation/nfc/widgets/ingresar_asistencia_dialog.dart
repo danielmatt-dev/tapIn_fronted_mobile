@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tapin/src/features/domain/use_cases/registrar_asistencia_alumno.dart';
+import 'package:tapin/src/shared/exceptions/exceptions.dart';
+import 'package:tapin/src/shared/utils/injections.dart';
 import 'package:tapin/src/shared/widgets/alert_cart.dart';
 import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,9 +14,12 @@ class IngresarAsistenciaDialog {
     required NfcCubit nfcCubit,
     required TipoAcceso tipoAcceso,
   }) {
-    final controller = TextEditingController();
+    final emailController = TextEditingController();
+
     final appLoc = AppLocalizations.of(context)!;
     final colorSchema = Theme.of(context).colorScheme;
+
+    final registrarAsistenciaAlumno = sl<RegistrarAsistenciaAlumno>();
 
     return showDialog(
       context: context,
@@ -51,7 +58,11 @@ class IngresarAsistenciaDialog {
 
               // Campo de correo
               TextField(
-                controller: controller,
+                controller: emailController,
+                onChanged: (String value) {
+                  emailController.text = value;
+                  print(emailController.text);
+                },
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: appLoc.correoInstitucionalLabel,
@@ -68,12 +79,9 @@ class IngresarAsistenciaDialog {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    final text = controller.text.trim();
-                    Navigator.of(context).pop();
+                  onPressed: () async {
 
-                    if (text.isEmpty) {
-                      // Alerta de alumno no encontrado
+                    if (emailController.text.isEmpty) {
                       showDialog(
                         context: context,
                         barrierDismissible: true,
@@ -84,8 +92,8 @@ class IngresarAsistenciaDialog {
                           ),
                           child: AlertCart(
                             icon: Icons.warning_amber_rounded,
-                            title: appLoc.alertaLabel,
-                            subtitle: appLoc.alumnoNotFoundLabel,
+                            title: 'Alerta',
+                            subtitle: 'El correo no debe estar vacío',
                             onTap: () {
                               Navigator.of(context).pop();
                               // Reiniciar escaneo
@@ -94,10 +102,143 @@ class IngresarAsistenciaDialog {
                           ),
                         ),
                       );
-                    } else {
-                      // Lanza el evento de escaneo con el tipo de acceso
-                      nfcCubit.escanearNfcEvent(tipoAcceso);
                     }
+
+                    if (emailController.text == 'roberto@gmail.com') {
+                      Navigator.of(context).pop();
+                      showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (_) => Dialog(
+                          insetPadding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 48,
+                          ),
+                          child: AlertCart(
+                            icon: Icons.warning_amber_rounded,
+                            title: 'Alerta',
+                            subtitle: 'El alumno se encuentra dado de baja',
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              // Reiniciar escaneo
+                              nfcCubit.escanearNfcEvent(tipoAcceso);
+                            },
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+
+                    DateTime ahora = DateTime.now();
+                    final fechaFormateada = DateFormat('yyyy-MM-dd').format(ahora);
+                    final horaFormateada = DateFormat('HH:mm:ss').format(ahora);
+
+                    final eitherAsistencia = await registrarAsistenciaAlumno.call(
+                        AlumnoRequest(
+                            fecha: fechaFormateada,
+                            hora: horaFormateada,
+                            tipoAcceso: tipoAcceso,
+                            correo: emailController.text
+                        )
+                    );
+
+                    Navigator.of(context).pop();
+                    nfcCubit.escanearNfcEvent(tipoAcceso);
+
+                    eitherAsistencia.fold(
+                            (ex) {
+                              if (ex is ResourceNotFoundException) {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (_) => Dialog(
+                                    insetPadding: const EdgeInsets.symmetric(
+                                      horizontal: 24,
+                                      vertical: 48,
+                                    ),
+                                    child: AlertCart(
+                                      icon: Icons.warning_amber_rounded,
+                                      title: appLoc.alertaLabel,
+                                      subtitle: appLoc.alumnoNotFoundLabel,
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                        // Reiniciar escaneo
+                                        nfcCubit.escanearNfcEvent(tipoAcceso);
+                                      },
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              if (ex is BadRequestException) {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (_) => Dialog(
+                                    insetPadding: const EdgeInsets.symmetric(
+                                      horizontal: 24,
+                                      vertical: 48,
+                                    ),
+                                    child: AlertCart(
+                                      icon: Icons.warning_amber_rounded,
+                                      title: appLoc.alertaLabel,
+                                      subtitle: 'El correo no está asociado a un alumno',
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                        // Reiniciar escaneo
+                                        nfcCubit.escanearNfcEvent(tipoAcceso);
+                                      },
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              showDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                builder: (_) => Dialog(
+                                  insetPadding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 48,
+                                  ),
+                                  child: AlertCart(
+                                    icon: Icons.error,
+                                    title: 'Error',
+                                    subtitle: 'Por favor, intentalo más tarde',
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                      // Reiniciar escaneo
+                                      nfcCubit.escanearNfcEvent(tipoAcceso);
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                            (succes) {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                builder: (_) => Dialog(
+                                  insetPadding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 48,
+                                  ),
+                                  child: AlertCart(
+                                    icon: Icons.check_circle_outline,
+                                    title: 'Éxito',
+                                    subtitle: 'Asistencia registrada',
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                      // Reiniciar escaneo
+                                      nfcCubit.escanearNfcEvent(tipoAcceso);
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorSchema.primary,

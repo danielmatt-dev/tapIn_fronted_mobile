@@ -8,18 +8,24 @@ part of 'alumno_request_model.dart';
 
 AlumnoRequestModel _$AlumnoRequestModelFromJson(Map<String, dynamic> json) =>
     AlumnoRequestModel(
-      idNfc: json['id_nfc'] as String,
+      idNfc: json['id_nfc'] as String?,
+      correo: json['correo'] as String?,
       fecha: json['fecha'] as String,
-      hora: json['hora'],
+      hora: json['hora'] as String,
       tipoAcceso: $enumDecode(_$TipoAccesoEnumMap, json['tipo_acceso']),
+      tipoRegistro: json['tipo_registro'] as String? ?? 'Normal',
+      estado: json['estado'] as String? ?? 'Habilitado',
     );
 
 Map<String, dynamic> _$AlumnoRequestModelToJson(AlumnoRequestModel instance) =>
     <String, dynamic>{
-      'tipo_acceso': _$TipoAccesoEnumMap[instance.tipoAcceso]!,
-      'hora': instance.hora,
-      'fecha': instance.fecha,
       'id_nfc': instance.idNfc,
+      'correo': instance.correo,
+      'fecha': instance.fecha,
+      'hora': instance.hora,
+      'tipo_acceso': _$TipoAccesoEnumMap[instance.tipoAcceso]!,
+      'tipo_registro': instance.tipoRegistro,
+      'estado': instance.estado,
     };
 
 const _$TipoAccesoEnumMap = {

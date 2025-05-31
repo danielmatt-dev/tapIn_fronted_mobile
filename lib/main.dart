@@ -77,6 +77,7 @@ class MyApp extends StatelessWidget {
         Locale('es'),
         Locale('en'),
       ],
+      debugShowCheckedModeBanner: false,
       locale: const Locale('es'),
       theme: ThemeData(
         colorScheme: colorSchemeLight,

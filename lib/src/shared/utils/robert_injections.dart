@@ -3,20 +3,25 @@ import 'package:tapin/src/features/data/data_sources/remote/impl/datasource_remo
 import 'package:tapin/src/features/data/mapper/alumno_mapper_implement.dart';
 import 'package:tapin/src/features/domain/use_cases/consultar_asistencia_alumno.dart';
 import 'package:tapin/src/features/domain/use_cases/registrar_asistencia_alumno.dart';
+import 'package:tapin/src/features/presentation/nfc/cubit/nfc_cubit.dart';
 import 'package:tapin/src/shared/utils/injections.dart';
 
-initRobertInjections() async{
+initRobertInjections() async {
 
   /* Datasource remote */
   sl.registerSingleton<DataSourceRemote>(
-      DataSourceRemoteImpl(dio: sl(), datasourcelocal: sl()), );
+    DataSourceRemoteImpl(dio: sl(), datasourcelocal: sl()),);
 
   sl.registerSingleton<AlumnoMapperImplement>(
-    AlumnoMapperImplement());
+      AlumnoMapperImplement());
 
   sl.registerSingleton<RegistrarAsistenciaAlumno>(
     RegistrarAsistenciaAlumno(mapper: sl(), remote: sl()));
 
   sl.registerSingleton<ConsultarAsistenciaAlumno>(
     ConsultarAsistenciaAlumno(remote: sl(), local: sl()));
+
+  /* Cubit */
+  sl.registerSingleton<NfcCubit>(NfcCubit(escanearNFC: sl(), registrarAsistenciaAlumno: sl()));
+
 }
